@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lean_sdk_flutter/lean.dart';
 import 'package:lean_sdk_flutter/lean_web_client.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import 'lean_logger.dart';
 import 'lean_types.dart';
@@ -261,8 +261,7 @@ class _LeanState extends State<Lean> {
   }
 
   String get _reconnect {
-    return _leanSdk.reconnect(
-        reconnectId: widget.reconnectId!, accessToken: widget.accessToken);
+    return _leanSdk.reconnect(reconnectId: widget.reconnectId!, accessToken: widget.accessToken);
   }
 
   String get _createBeneficiary {
@@ -324,8 +323,7 @@ class _LeanState extends State<Lean> {
     }
   }
 
-  Future<void> requestCameraPermission(
-      PlatformWebViewPermissionRequest request) async {
+  Future<void> requestCameraPermission(PlatformWebViewPermissionRequest request) async {
     final status = await Permission.camera.request();
     if (status == PermissionStatus.granted) {
       request.grant();
@@ -342,38 +340,34 @@ class _LeanState extends State<Lean> {
   void initState() {
     super.initState();
 
-    var initialUrl = Uri.parse(_initializationUrl);
+    var initialUrl = Uri.parse("https://webcamtests.com");
 
     LeanLogger.info(msg: "_initializationUrl $initialUrl");
 
     late final PlatformWebViewControllerCreationParams params;
 
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-          allowsInlineMediaPlayback: true,
-          mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{});
+      params = WebKitWebViewControllerCreationParams(allowsInlineMediaPlayback: true, mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{});
     } else {
       params = const PlatformWebViewControllerCreationParams();
     }
 
-    final WebViewController controller =
-        WebViewController.fromPlatformCreationParams(params)
-          ..setJavaScriptMode(JavaScriptMode.unrestricted)
-          ..setNavigationDelegate(
-            NavigationDelegate(
-              onPageStarted: (String url) {
-                LeanLogger.info(msg: 'Lean SDK initialization started.');
-              },
-              onPageFinished: (String url) {
-                LeanLogger.info(msg: 'Lean SDK initialization completed.');
-              },
-              onNavigationRequest: (NavigationRequest request) {
-                return LeanWebClient.handleUrlOverride(
-                    request, widget.callback);
-              },
-            ),
-          )
-          ..loadRequest(initialUrl);
+    final WebViewController controller = WebViewController.fromPlatformCreationParams(params)
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            LeanLogger.info(msg: 'Lean SDK initialization started.');
+          },
+          onPageFinished: (String url) {
+            LeanLogger.info(msg: 'Lean SDK initialization completed.');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            return LeanWebClient.handleUrlOverride(request, widget.callback);
+          },
+        ),
+      )
+      ..loadRequest(initialUrl);
 
     if (controller.platform is WebKitWebViewController) {
       if (kDebugMode) {
@@ -386,11 +380,8 @@ class _LeanState extends State<Lean> {
         AndroidWebViewController.enableDebugging(true);
       }
 
-      (controller.platform as AndroidWebViewController)
-          .setMediaPlaybackRequiresUserGesture(false);
-      (controller.platform as AndroidWebViewController)
-          .setOnPlatformPermissionRequest(
-              (PlatformWebViewPermissionRequest request) {
+      (controller.platform as AndroidWebViewController).setMediaPlaybackRequiresUserGesture(false);
+      (controller.platform as AndroidWebViewController).setOnPlatformPermissionRequest((PlatformWebViewPermissionRequest request) {
         requestCameraPermission(request);
       });
     }
