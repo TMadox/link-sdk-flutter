@@ -15,8 +15,7 @@ class LeanWebClient {
       exitPoint: uri.queryParameters["exit_point"],
       lastApiResponse: uri.queryParameters["last_api_response"],
       secondaryStatus: uri.queryParameters["secondary_status"],
-      bankIsSupported:
-          uri.queryParameters["is_supported"]?.toLowerCase() == 'true',
+      bankIsSupported: uri.queryParameters["is_supported"]?.toLowerCase() == 'true',
       exitIntentPoint: uri.queryParameters["exit_intent_point"],
       exitSurveyReason: uri.queryParameters["exit_survey_reason"],
       leanCorrelationId: uri.queryParameters["lean_correlation_id"],
