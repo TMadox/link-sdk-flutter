@@ -107,4 +107,18 @@ class LeanResponse {
     this.exitSurveyReason,
     this.leanCorrelationId,
   });
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'status': status,
+      if (message != null) 'message': message,
+      if (lastApiResponse != null) 'lastApiResponse': lastApiResponse,
+      if (exitPoint != null) 'exitPoint': exitPoint,
+      if (secondaryStatus != null) 'secondaryStatus': secondaryStatus,
+      if (bankId != null) 'bankId': bankId,
+      if (bankIsSupported != null) 'bankIsSupported': bankIsSupported,
+      if (exitIntentPoint != null) 'exitIntentPoint': exitIntentPoint,
+      if (exitSurveyReason != null) 'exitSurveyReason': exitSurveyReason,
+      if (leanCorrelationId != null) 'leanCorrelationId': leanCorrelationId,
+    };
+  }
 }
